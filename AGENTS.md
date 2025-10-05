@@ -70,34 +70,101 @@ Build a **real-time collaborative music creation system** where:
 - `transpiler` from `@strudel/transpiler` - handles mini-notation
 - Global functions from `@strudel/core`, `@strudel/mini`, `@strudel/tonal`
 
-**Working Code:**
+**Working Initialization:**
 ```javascript
-// Initialize (in useStrudelDirect hook)
 await initAudioOnFirstClick()
 Object.assign(window, strudel, mini, tonal)
 registerSynthSounds()
-const repl = webaudioRepl({ transpiler })
 
-// Play
+// Register drum samples manually
+registerSound('bd', async (t, value, onended) => {
+  const ctx = getAudioContext()
+  const response = await fetch('/samples/bd/BT0A0A7.wav')
+  const buffer = await ctx.decodeAudioData(await response.arrayBuffer())
+  const source = ctx.createBufferSource()
+  source.buffer = buffer
+  const gain = ctx.createGain()
+  gain.gain.value = value.gain || 1
+  source.connect(gain)
+  source.start(t)
+  source.onended = onended
+  return { node: gain, stop: () => source.stop() }
+}, { type: 'sample' })
+
+const repl = webaudioRepl({ transpiler })
 await repl.evaluate(code)
 repl.start()
 ```
 
-**Synths Work:** `note("c4").s("sawtooth")`, `.s("sine")`, `.s("square")`, `.s("triangle")`
+**Strudel Syntax - What Works:**
 
-**Samples:** Currently using built-in synths. Dirt-Samples downloaded but not yet loaded.
+**Basic Patterns:**
+```javascript
+note("c4 e4 g4")              // sequence of notes
+s("bd sd bd sd")               // sequence of samples
+note("c4*4")                   // repeat 4 times
+s("bd ~ ~ bd")                 // ~ is rest
+```
 
-**Key Strudel Functions:**
-- `stack()` - layer multiple patterns
-- `note()` - melodic patterns
-- `s()` - sound/samples
-- `.lpf()`, `.hpf()` - filters
-- `.gain()` - volume
-- `.room()`, `.delay()` - effects
-- `.sometimes()` - randomization
-- `<a b c>` - alternating patterns
-- `[a b]*n` - fast subdivisions
-- `~` - rest/silence
+**Layering:**
+```javascript
+stack(
+  note("c4").s("sine"),        // comma separates layers
+  s("bd*4")
+)
+```
+
+**Alternation:**
+```javascript
+<a b c>                        // alternates each cycle
+note("<c4 e4 g4>")            // c4 on cycle 1, e4 on cycle 2, g4 on cycle 3
+```
+
+**Fast Subdivisions:**
+```javascript
+[a b]                          // plays a then b in same beat
+[a b]*2                        // plays pattern twice as fast
+note("[c4 e4]*2")             // 8th notes
+```
+
+**Effects Chain:**
+```javascript
+note("c4")
+  .s("sawtooth")               // synth/sample
+  .lpf(800)                    // low-pass filter
+  .resonance(10)               // filter resonance
+  .distort(0.5)                // distortion
+  .gain(0.8)                   // volume
+  .room(0.5)                   // reverb
+  .delay(0.5)                  // delay wet/dry
+  .delaytime(0.125)            // delay time
+  .delayfeedback(0.3)          // delay feedback
+  .decay(0.3)                  // envelope decay
+```
+
+**Modulation (LFOs):**
+```javascript
+.lpf(sine.range(400, 2000).slow(4))   // filter sweeps over 4 bars
+.gain(sine.range(0.5, 1.0).slow(2))   // gain oscillates over 2 bars
+```
+
+**Randomization:**
+```javascript
+.sometimes(x => x.add(note(12)))      // sometimes add octave
+.degradeBy(0.3)                       // randomly drop 30% of notes
+```
+
+**CRITICAL SYNTAX MISTAKES TO AVOID:**
+
+❌ **DON'T use nested `<< >>`** - doesn't work as expected
+❌ **DON'T use commas to repeat** - commas LAYER, not repeat
+❌ **DON'T use `.slow()` on stacks** - slows the notes, not the structure
+❌ **DON'T use `.segment()` with `slowcat()`** - conflicts
+
+✅ **DO use `<[pattern]*4 [pattern2]*4>`** for A/B sections
+✅ **DO write out explicit patterns** when structure isn't working
+✅ **DO keep code readable** with line breaks and indentation
+✅ **DO test simple versions first** before adding complexity
 
 ## Collaboration Workflow (CRITICAL)
 

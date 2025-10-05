@@ -7,7 +7,7 @@ stack(
     .room(0.2)
     .decay(0.15)
     .gain(1.1),
-  s("bd*4, ~ sd ~ sd, [hh [hh hh]]*4")
+  s("bd*4, ~ sd ~ sd, [[hh hh]hh]*4")
     .gain(1.3)
     .room(0.3),
   s("~ ~ cp ~")
