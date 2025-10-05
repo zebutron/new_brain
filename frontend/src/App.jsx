@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
-import StrudelREPL from './components/StrudelREPL'
+import StrudelEditor from './components/StrudelEditor'
 import AudioVisualizer from './components/AudioVisualizer'
 import ChatInterface from './components/ChatInterface'
 import { useWebSocket } from './hooks/useWebSocket'
+import { useStrudelDirect } from './hooks/useStrudelDirect'
 import './App.css'
 
 function App() {
   const [code, setCode] = useState('note("c3 e3 g3 c4").s("sawtooth")')
-  const [isPlaying, setIsPlaying] = useState(false)
   const { connected, sendMessage, socket } = useWebSocket()
+  const { isPlaying, error, toggle } = useStrudelDirect()
 
   useEffect(() => {
     // Sync code changes with backend
@@ -39,7 +40,7 @@ function App() {
   }
 
   const handlePlayToggle = () => {
-    setIsPlaying(!isPlaying)
+    toggle(code)
   }
 
   const handleFeedback = (feedback) => {
@@ -61,10 +62,11 @@ function App() {
 
       <main className="app-main">
         <div className="editor-section">
-          <StrudelREPL
+          <StrudelEditor
             code={code}
             onChange={handleCodeChange}
             isPlaying={isPlaying}
+            error={error}
           />
         </div>
 
