@@ -8,17 +8,23 @@ function StrudelREPL({ code, onChange, isPlaying }) {
     const repl = replRef.current
     if (!repl) return
 
-    // Wait for component to be ready
+    // Override sample loading to use local samples
     const initEditor = () => {
+      if (window.strudel && window.strudel.registerSamplesPrefix) {
+        window.strudel.registerSamplesPrefix('/samples')
+      }
+      
       if (code && repl.code !== code) {
         repl.code = code
       }
       
-      // Force evaluation on mount
+      // Try to force synth-only evaluation (no samples needed)
       setTimeout(() => {
-        if (repl.editor?.repl?.evaluate) {
-          repl.editor.repl.evaluate(code).catch(err => {
-            console.log('Initial eval error (ok if samples loading):', err.message)
+        if (repl.editor?.repl) {
+          // Use simple synth sound instead
+          const synthCode = 'note("c3 e3 g3 c4").s("sawtooth").gain(0.5)'
+          repl.editor.repl.evaluate(synthCode).catch(err => {
+            console.log('Eval error:', err.message)
           })
         }
       }, 1000)
