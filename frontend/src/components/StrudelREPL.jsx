@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import '@strudel/repl'
 import './StrudelREPL.css'
 
 function StrudelREPL({ code, onChange, isPlaying }) {
@@ -33,6 +32,8 @@ function StrudelREPL({ code, onChange, isPlaying }) {
       <strudel-editor 
         ref={replRef}
         lazy
+        punchcard
+        embedded
       >
         {code}
       </strudel-editor>
