@@ -14,20 +14,20 @@ function App() {
     .sometimes(x => x.add(note(12))),
   s("bd*4, ~ sd ~ <sd sd sd [sd ~ ~ sd]>")
     .gain(1.2),
-  s("<[hh ~ ~ ~] [~ hh hh ~] [~ ~ hh ~] [hh hh ~ hh]>")
-    .gain(0.8),
+  s("<[hh ~ hh [hh hh]*2] [~ hh ~ [hh hh hh ~]] [[hh ~]*2 hh ~] [~ [hh hh] ~ hh]>")
+    .gain(0.75),
   s("~ ~ ~ cp")
     .gain(0.9)
     .delay(0.4)
     .delayfeedback(0.3),
-  note("<[c4 e4 g4 c5] [c4 g4 e4 c4] [e4 g4 c5 e5] [g4 e4 c4 g3]>")
+  note("<[~ e5 ~ [g5 a5]*2] [c6 ~ b5 ~] [~ ~ a5 g5] [[e5 g5] ~ c6 ~]>")
     .s("square")
-    .lpf(4000)
-    .decay(0.08)
-    .gain(0.6)
-    .delay(0.5)
-    .delaytime(0.125)
-    .delayfeedback(0.3)
+    .lpf(5000)
+    .decay(0.12)
+    .gain(0.65)
+    .delay(0.4)
+    .delaytime(0.0833)
+    .delayfeedback(0.25)
 )`)
   const { isPlaying, error, toggle } = useStrudelDirect()
 
