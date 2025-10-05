@@ -30,7 +30,10 @@ function StrudelREPL({ code, onChange, isPlaying }) {
 
   return (
     <div className="strudel-repl-container">
-      <strudel-editor ref={replRef}>
+      <strudel-editor 
+        ref={replRef}
+        lazy
+      >
         {code}
       </strudel-editor>
     </div>
