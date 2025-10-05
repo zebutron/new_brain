@@ -53,10 +53,12 @@ This is a real-time collaborative music creation system using Strudel. AI acts a
 - Separate dev/prod environments (.env.dev, .env.prod)
 
 ## Git Workflow
-- Meaningful commit messages
+- Take initiative: Commit and push changes proactively
+- Meaningful commit messages that capture the "why"
 - Small, focused commits when possible
-- Branch for experimental features
+- Branch for experimental features if they might break things
 - Main branch should always be runnable
+- Full autonomy to manage the repository
 
 ## AI Behavior Patterns
 - Take creative initiative in music generation

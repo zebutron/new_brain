@@ -68,11 +68,12 @@ Build a **real-time collaborative music creation system** where:
 - Live evaluation is core to the experience
 - Integration should feel seamless in the coding environment
 
-## Critical Memories
+## Git & Repository Management
 
-- **BigQuery Protection**: Never run queries without permission (cost concerns) [[memory:5487195]]
-- **Environment Variables**: Use .env files for credentials (DB_HOST, DB_USER, etc.) [[memory:5486923]]
-- **Environment Separation**: Separate .env files per environment (.env.dev, .env.prod), all gitignored [[memory:5486906]]
+- **Full Autonomy**: AI has full control to commit, push, and manage the repository
+- **Proactive Commits**: Commit changes without asking for permission
+- **Meaningful Messages**: Explain the "why" in commit messages
+- **Trust-Based**: Human trusts AI to make good decisions about repository management
 
 ## Context Window Management
 
