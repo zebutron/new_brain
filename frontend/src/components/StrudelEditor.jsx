@@ -1,13 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import './StrudelEditor.css'
 
-function StrudelEditor({ code, onChange, isPlaying }) {
+function StrudelEditor({ code, onChange, isPlaying, error }) {
   const textareaRef = useRef(null)
-
-  useEffect(() => {
-    // Initialize Strudel editor integration here
-    // This is a placeholder for now
-  }, [])
 
   const handleChange = (e) => {
     onChange(e.target.value)
@@ -16,8 +11,11 @@ function StrudelEditor({ code, onChange, isPlaying }) {
   return (
     <div className="strudel-editor">
       <div className="editor-header">
-        <span className="editor-title">Live Code Editor</span>
-        <span className="editor-hint">Ctrl+Enter to evaluate</span>
+        <span className="editor-title">Strudel Live Code</span>
+        <div className="editor-status">
+          {isPlaying && <span className="status-badge playing">▶ Playing</span>}
+          {error && <span className="status-badge error">⚠ {error}</span>}
+        </div>
       </div>
       <textarea
         ref={textareaRef}
@@ -25,7 +23,7 @@ function StrudelEditor({ code, onChange, isPlaying }) {
         value={code}
         onChange={handleChange}
         spellCheck="false"
-        placeholder="Start coding your music..."
+        placeholder="// Strudel pattern code here..."
       />
     </div>
   )

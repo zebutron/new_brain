@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import StrudelEditor from './components/StrudelEditor'
 import AudioVisualizer from './components/AudioVisualizer'
-import ControlPanel from './components/ControlPanel'
+import ChatInterface from './components/ChatInterface'
 import { useWebSocket } from './hooks/useWebSocket'
+import { useStrudel } from './hooks/useStrudel'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('// Welcome to New Brain\n// AI + Human Musical Symbiosis\n\n// Try this:\n// sound("bd sd")')
-  const [isPlaying, setIsPlaying] = useState(false)
-  const { connected, sendMessage } = useWebSocket()
+  const [code, setCode] = useState('// AI-generated Strudel pattern\n// Click play to hear it!\n\nsound("bd sd, hh*4")\n  .gain(0.8)')
+  const { connected, sendMessage, socket } = useWebSocket()
+  const { isPlaying, error, toggle } = useStrudel()
 
   useEffect(() => {
     // Sync code changes with backend
@@ -17,12 +18,36 @@ function App() {
     }
   }, [code, connected, sendMessage])
 
+  // Listen for code updates from AI/backend
+  useEffect(() => {
+    if (socket) {
+      socket.on('code_update', (data) => {
+        if (data.code) {
+          setCode(data.code)
+        }
+      })
+      
+      socket.on('ai_message', (data) => {
+        if (data.message && window.addAIMessage) {
+          window.addAIMessage(data.message)
+        }
+      })
+    }
+  }, [socket])
+
   const handleCodeChange = (newCode) => {
     setCode(newCode)
   }
 
   const handlePlayToggle = () => {
-    setIsPlaying(!isPlaying)
+    toggle(code)
+  }
+
+  const handleFeedback = (feedback) => {
+    // Send feedback to backend where AI can process it
+    if (connected) {
+      sendMessage({ type: 'feedback', feedback, currentCode: code })
+    }
   }
 
   return (
@@ -41,6 +66,7 @@ function App() {
             code={code}
             onChange={handleCodeChange}
             isPlaying={isPlaying}
+            error={error}
           />
         </div>
 
@@ -49,9 +75,10 @@ function App() {
         </div>
 
         <div className="control-section">
-          <ControlPanel
+          <ChatInterface
             isPlaying={isPlaying}
             onPlayToggle={handlePlayToggle}
+            onFeedback={handleFeedback}
           />
         </div>
       </main>
