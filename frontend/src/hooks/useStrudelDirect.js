@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getAudioContext, initAudioOnFirstClick, getCompressor, getSuperDough } from '@strudel/webaudio'
+import { getAudioContext, initAudioOnFirstClick, webaudioOutput } from '@strudel/webaudio'
 import { repl } from '@strudel/core'
 import { transpiler } from '@strudel/transpiler'
 
@@ -21,23 +21,10 @@ export function useStrudelDirect() {
         
         console.log('🔊 AudioContext:', ctx.state)
         
-        // Create REPL
+        // Create REPL with webaudioOutput
         replRef.current = repl({
           transpiler,
-          onTrigger: async (time, hap) => {
-            try {
-              const dough = await getSuperDough()
-              const { value } = hap
-              
-              if (value.s) {
-                const { node } = await dough.trigger(time, value, 1)
-                const compressor = getCompressor()
-                node.connect(compressor)
-              }
-            } catch (err) {
-              console.log('Trigger error:', err.message)
-            }
-          }
+          onTrigger: webaudioOutput,
         })
         
         console.log('✅ Ready')
