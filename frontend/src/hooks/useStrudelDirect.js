@@ -31,13 +31,19 @@ export function useStrudelDirect() {
         registerSynthSounds()
         console.log('🎹 Synths registered')
         
-        // Register drum samples manually
-        const drums = ['bd', 'sd', 'hh', 'cp', 'oh']
-        for (const drum of drums) {
+        // Register drum samples with specific files
+        const drumSamples = {
+          bd: 'BT0A0A7.wav',
+          sd: 'rytm-00-hard.wav',
+          hh: '000_hh3closedhh.wav',
+          cp: 'HANDCLP0.wav',
+          oh: 'HHOD2.wav'
+        }
+        
+        for (const [drum, filename] of Object.entries(drumSamples)) {
           registerSound(drum, async (t, value, onended) => {
             const ctx = getAudioContext()
-            const n = value.n || 0
-            const sampleUrl = `/samples/${drum}/BT0A0A7.wav`
+            const sampleUrl = `/samples/${drum}/${filename}`
             
             try {
               const response = await fetch(sampleUrl)
@@ -54,12 +60,12 @@ export function useStrudelDirect() {
               
               return { node: gain, stop: () => source.stop() }
             } catch (err) {
-              console.log(`Sample error:`, err.message)
+              console.log(`Sample ${sampleUrl} error:`, err.message)
               return { node: ctx.createGain(), stop: () => {} }
             }
           }, { type: 'sample' })
         }
-        console.log('🥁 Drums registered')
+        console.log('🥁 Drums registered: bd, sd, hh, cp, oh')
         
         // Use webaudioRepl - pre-configured with audio output
         replRef.current = webaudioRepl({
