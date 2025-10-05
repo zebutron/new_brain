@@ -14,25 +14,23 @@ function App() {
     .room(0.7)
     .decay(0.8)
     .gain(1.3),
-  note("<a2 ~ ~ a2> <bb2 ~ bb2 ~>")
-    .s("square")
-    .lpf(400)
-    .distort(0.5)
-    .gain(0.9),
+  note("<a0 bb0 a0 ab0>")
+    .s("sine")
+    .lpf(200)
+    .distort(0.3)
+    .gain(1.0),
   s("bd ~ ~ bd, ~ ~ sd ~")
     .gain(1.4)
     .room(0.8),
   s("~ ~ ~ ~, [~ ~ hh ~]*2")
     .gain(0.6),
-  note("<[a3 c4 e4] [bb3 d4 f4] [ab3 c4 eb4] [g3 b3 d4]>")
-    .s("sine")
-    .lpf(4000)
-    .decay(0.4)
-    .gain(0.5)
-    .delay(0.6)
-    .delaytime(0.1875)
-    .delayfeedback(0.5)
-    .room(0.9)
+  note("<[~ ~ a4 ~] [~ c5 ~ ~] [~ ~ eb5 ~] [d5 ~ ~ ~]>")
+    .s("sawtooth")
+    .lpf(sine.range(800, 2000).slow(4))
+    .distort(sine.range(0.3, 0.7).slow(3))
+    .gain(sine.range(0.6, 0.9).slow(2.5))
+    .decay(0.6)
+    .room(0.8)
 )`)
   const { isPlaying, error, toggle } = useStrudelDirect()
 
