@@ -31,13 +31,6 @@ export function useStrudelDirect() {
         registerSynthSounds()
         console.log('🎹 Synths registered')
         
-        // Register samples from working CDN (EmuSP12 drum machine)
-        await samples('github:tidalcycles/Dirt-Samples/master', {
-          tag: 'EmuSP12',
-          prebake: true
-        })
-        console.log('🥁 Drums loading...')
-        
         // Use webaudioRepl - pre-configured with audio output
         replRef.current = webaudioRepl({
           transpiler,
