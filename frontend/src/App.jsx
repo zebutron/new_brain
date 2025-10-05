@@ -7,7 +7,7 @@ import './App.css'
 function App() {
   const [code, setCode] = useState(`slowcat(
   stack(
-    note("a1 bb1 a1 ab1, a1 bb1 a1 ab1, a1 bb1 a1 ab1, a1 bb1 a1 ab1")
+    note("a1 bb1 a1 ab1")
       .s("sawtooth")
       .lpf(800)
       .resonance(15)
@@ -15,7 +15,7 @@ function App() {
       .room(0.7)
       .decay(0.8)
       .gain(1.3),
-    note("a0 bb0 a0 ab0, a0 bb0 a0 ab0, a0 bb0 a0 ab0, a0 bb0 a0 ab0")
+    note("a0 bb0 a0 ab0")
       .s("sine")
       .lpf(200)
       .distort(0.3)
@@ -27,14 +27,14 @@ function App() {
       .gain(0.6),
     note("[~ ~ a4 ~] [~ c5 ~ ~] [~ ~ eb5 ~] [d5 ~ ~ ~]")
       .s("sawtooth")
-      .lpf(sine.range(800, 2000).slow(16))
-      .distort(sine.range(0.3, 0.7).slow(12))
-      .gain(sine.range(0.6, 0.9).slow(10))
+      .lpf(sine.range(800, 2000).slow(4))
+      .distort(sine.range(0.3, 0.7).slow(3))
+      .gain(sine.range(0.6, 0.9).slow(2.5))
       .decay(0.6)
       .room(0.8)
   ),
   stack(
-    note("e1 f1 e1 eb1, e1 f1 e1 eb1, e1 f1 e1 eb1, e1 f1 e1 eb1")
+    note("e1 f1 e1 eb1")
       .s("sawtooth")
       .lpf(600)
       .resonance(18)
@@ -42,12 +42,12 @@ function App() {
       .room(0.8)
       .decay(0.9)
       .gain(1.5),
-    note("e0 f0 e0 eb0, e0 f0 e0 eb0, e0 f0 e0 eb0, e0 f0 e0 eb0")
+    note("e0 f0 e0 eb0")
       .s("sine")
       .lpf(150)
       .distort(0.4)
       .gain(1.2),
-    note("e-1 f-1 e-1 eb-1, e-1 f-1 e-1 eb-1, e-1 f-1 e-1 eb-1, e-1 f-1 e-1 eb-1")
+    note("e-1 f-1 e-1 eb-1")
       .s("sine")
       .lpf(80)
       .gain(0.8),
@@ -58,9 +58,9 @@ function App() {
       .gain(0.5),
     note("[e4 f4 ~ gb4] [~ ab4 f4 ~] [e4 ~ eb4 db4] [c4 ~ db4 eb4]")
       .s("sawtooth")
-      .lpf(sine.range(600, 1800).slow(12))
-      .distort(sine.range(0.5, 0.9).slow(10))
-      .gain(sine.range(0.7, 1.0).slow(8))
+      .lpf(sine.range(600, 1800).slow(4))
+      .distort(sine.range(0.5, 0.9).slow(3))
+      .gain(sine.range(0.7, 1.0).slow(2))
       .decay(0.4)
       .room(0.9)
   )
