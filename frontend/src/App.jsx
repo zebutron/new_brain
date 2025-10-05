@@ -5,7 +5,7 @@ import { useStrudelDirect } from './hooks/useStrudelDirect'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('stack(note("c1 e1 g1 c2 e1 g1 c2 e1").s("sawtooth").lpf(400).room(0.3).gain(0.6),s("bd*4").gain(1.3),s("~ sd ~ sd, hh*8").gain(0.8),s("~ ~ cp ~").delay(0.3).delaytime(0.125).gain(0.7),note("<[c4 e4 g4] ~!3>").s("square").lpf(3000).decay(0.05).gain(0.4).sometimes(x=>x.add(note(12))))')
+  const [code, setCode] = useState('stack(note("c1 e1 g1 c2 e1 g1 c2 e1").s("sawtooth").lpf(400).room(0.3).gain(0.6),note("c0!4").s("sine").decay(0.08).sustain(0).distort(0.3).lpf(80).gain(1.4),note("~ <60 [61 59]> ~ 60").s("sine").decay(0.06).sustain(0).hpf(200).lpf(800).gain(1.1),note("[~ ~ ~]*16").s("sine").freq(8000).decay(0.01).sustain(0).gain(0.3).sometimes(x=>x.gain(0.7)),note("<[c4 e4 g4] ~!3>").s("square").lpf(3000).decay(0.05).gain(0.5).sometimes(x=>x.add(note(12))).delay(0.4).delaytime(0.125))')
   const { isPlaying, error, toggle } = useStrudelDirect()
 
   const handleCodeChange = (newCode) => {
