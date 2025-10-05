@@ -2,6 +2,9 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { getAudioContext, initAudioOnFirstClick, webaudioOutput } from '@strudel/webaudio'
 import { repl } from '@strudel/core'
 import { transpiler } from '@strudel/transpiler'
+import * as strudel from '@strudel/core'
+import * as mini from '@strudel/mini'
+import * as tonal from '@strudel/tonal'
 
 export function useStrudelDirect() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -20,6 +23,10 @@ export function useStrudelDirect() {
         }
         
         console.log('🔊 AudioContext:', ctx.state)
+        
+        // Make all Strudel functions global
+        Object.assign(window, strudel, mini, tonal)
+        console.log('📚 Loaded functions:', Object.keys(strudel).length + Object.keys(mini).length + Object.keys(tonal).length)
         
         // Create REPL with webaudioOutput
         replRef.current = repl({
