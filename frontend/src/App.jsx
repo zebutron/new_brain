@@ -7,7 +7,7 @@ import { useStrudelDirect } from './hooks/useStrudelDirect'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('note("c3 e3 g3 c4").s("sawtooth")')
+  const [code, setCode] = useState('stack(note("c1 e1 g1 c2").s("sawtooth").lpf(800),sound("bd*4, ~ sd ~ sd, [~ hh]*8").gain(1.2))')
   const { connected, sendMessage, socket } = useWebSocket()
   const { isPlaying, error, toggle } = useStrudelDirect()
 
