@@ -6,7 +6,7 @@ import './App.css'
 
 function App() {
   const [code, setCode] = useState(`stack(
-  note("g1 ~ g1 ~")
+  note("<a1 bb1 a1 ab1>")
     .s("sawtooth")
     .lpf(800)
     .resonance(15)
@@ -14,7 +14,7 @@ function App() {
     .room(0.7)
     .decay(0.8)
     .gain(1.3),
-  note("g2 ~ ~ g2")
+  note("<a2 ~ ~ a2> <bb2 ~ bb2 ~>")
     .s("square")
     .lpf(400)
     .distort(0.5)
@@ -24,11 +24,11 @@ function App() {
     .room(0.8),
   s("~ ~ ~ ~, [~ ~ hh ~]*2")
     .gain(0.6),
-  note("[e6 g6 c7 e7]*4")
+  note("<[a3 c4 e4] [bb3 d4 f4] [ab3 c4 eb4] [g3 b3 d4]>")
     .s("sine")
-    .lpf(8000)
-    .decay(0.3)
-    .gain(0.4)
+    .lpf(4000)
+    .decay(0.4)
+    .gain(0.5)
     .delay(0.6)
     .delaytime(0.1875)
     .delayfeedback(0.5)
