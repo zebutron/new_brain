@@ -62,11 +62,72 @@ Build a **real-time collaborative music creation system** where:
 - Respect audio buffer sizes and sample rates
 - Handle audio context lifecycle properly (browser autoplay policies)
 
-### Strudel Integration
-- Strudel uses a pattern-based notation for music
-- It compiles to Web Audio API under the hood
-- Live evaluation is core to the experience
-- Integration should feel seamless in the coding environment
+### Strudel Integration (What Actually Works)
+
+**Stack:**
+- `webaudioRepl()` from `@strudel/webaudio` - pre-configured REPL with audio
+- `registerSynthSounds()` - registers sawtooth, sine, square, triangle
+- `transpiler` from `@strudel/transpiler` - handles mini-notation
+- Global functions from `@strudel/core`, `@strudel/mini`, `@strudel/tonal`
+
+**Working Code:**
+```javascript
+// Initialize (in useStrudelDirect hook)
+await initAudioOnFirstClick()
+Object.assign(window, strudel, mini, tonal)
+registerSynthSounds()
+const repl = webaudioRepl({ transpiler })
+
+// Play
+await repl.evaluate(code)
+repl.start()
+```
+
+**Synths Work:** `note("c4").s("sawtooth")`, `.s("sine")`, `.s("square")`, `.s("triangle")`
+
+**Samples:** Currently using built-in synths. Dirt-Samples downloaded but not yet loaded.
+
+**Key Strudel Functions:**
+- `stack()` - layer multiple patterns
+- `note()` - melodic patterns
+- `s()` - sound/samples
+- `.lpf()`, `.hpf()` - filters
+- `.gain()` - volume
+- `.room()`, `.delay()` - effects
+- `.sometimes()` - randomization
+- `<a b c>` - alternating patterns
+- `[a b]*n` - fast subdivisions
+- `~` - rest/silence
+
+## Collaboration Workflow (CRITICAL)
+
+### Human-AI Composition Loop
+
+1. **AI** writes Strudel code, updates `App.jsx`, commits & pushes
+2. **Human** refreshes browser at `http://localhost:3000`
+3. **Human** edits code in browser, presses **Cmd+Enter**
+4. **Code auto-saves** to `patterns/current.js` + timestamped version
+5. **AI reads** `patterns/current.js` to see human's changes
+6. **AI iterates** on the pattern, updates `App.jsx`, commits & pushes
+7. **Repeat**
+
+### For AI Agents
+
+**ALWAYS check `patterns/current.js` before composing** - this is the human's latest edits.
+
+```bash
+cat patterns/current.js
+```
+
+**When updating code**, modify the initial state in `App.jsx`:
+```javascript
+const [code, setCode] = useState(`your strudel code here`)
+```
+
+### Version History
+- `patterns/current.js` - Human's latest edits (source of truth)
+- `patterns/session-*.js` - Last 5 auto-saved versions
+- `patterns/*.js` - Saved patterns worth keeping
 
 ## Git & Repository Management
 

@@ -16,21 +16,24 @@ npm run dev
 
 Open `http://localhost:3000`
 
-## How It Works
+## Collaboration Flow
 
-1. **AI** writes Strudel code in Cursor
-2. **Human** refreshes browser to hear updates
-3. **Human** provides feedback in Cursor chat
-4. **AI** iterates on composition
-5. **Repeat** until the music is 🔥
+1. **AI** writes Strudel code → commits & pushes
+2. **Human** refreshes browser (`http://localhost:3000`)
+3. **Human** edits code, presses **Cmd+Enter** → auto-saves
+4. **Human** gives feedback in Cursor chat
+5. **AI** reads `patterns/current.js` → iterates → commits & pushes
+6. **Repeat**
 
-## Current Setup
+## What Works NOW
 
-- ✅ **React frontend** with Strudel live coding
-- ✅ **Working audio** via webaudioRepl
-- ✅ **Synth sounds** registered (sawtooth, sine, square, triangle)
-- ✅ **Samples** downloaded (Dirt-Samples library)
-- 🚧 **Sample loading** (to be configured)
+- ✅ **Live Strudel editor** - edit code, Cmd+Enter to evaluate
+- ✅ **Auto-save** - code saves to `patterns/current.js` + versioned backups
+- ✅ **Working audio** - webaudioRepl with Web Audio API
+- ✅ **Synths** - sawtooth, sine, square, triangle
+- ✅ **Audio visualizer** - real-time waveform
+- ✅ **Drum samples** - bd, sd, hh, cp registered
+- 🎵 **Making music together!**
 
 ## Philosophy
 
