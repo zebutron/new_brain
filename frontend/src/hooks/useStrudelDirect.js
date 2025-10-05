@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getAudioContext, initAudioOnFirstClick, webaudioRepl } from '@strudel/webaudio'
+import { getAudioContext, initAudioOnFirstClick, webaudioRepl, registerSynthSounds } from '@strudel/webaudio'
 import { transpiler } from '@strudel/transpiler'
 import * as strudel from '@strudel/core'
 import * as mini from '@strudel/mini'
