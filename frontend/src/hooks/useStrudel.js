@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { transpiler } from '@strudel/transpiler'
 import { repl } from '@strudel/core'
 import { getAudioContext, initAudioOnFirstClick } from '@strudel/webaudio'
+import { transpiler } from '@strudel/transpiler'
 
 export function useStrudel() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -24,9 +24,15 @@ export function useStrudel() {
         }
         
         replInstanceRef.current = repl({
+          transpiler,
           autodraw: false,
           getTime: () => getAudioContext().currentTime,
         })
+        
+        console.log('🔧 REPL object:', replInstanceRef.current)
+        console.log('🔧 REPL keys:', Object.keys(replInstanceRef.current))
+        console.log('🔧 evaluate:', replInstanceRef.current.evaluate)
+        console.log('🔧 setCode:', replInstanceRef.current.setCode)
         
         setIsInitialized(true)
         console.log('✅ Strudel ready')
@@ -70,11 +76,9 @@ export function useStrudel() {
       }
 
       console.log('🎵 Code:', code)
-
-      const transpiledCode = transpiler(code)
-      console.log('📝 Transpiled:', transpiledCode)
-
-      await replInstanceRef.current.evaluate(transpiledCode)
+      
+      await replInstanceRef.current.evaluate(code)
+      replInstanceRef.current.start()
       
       setIsPlaying(true)
       setError(null)

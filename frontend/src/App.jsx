@@ -7,7 +7,7 @@ import { useStrudel } from './hooks/useStrudel'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('note("c3 e3 g3 c4").s("sawtooth")')
+  const [code, setCode] = useState('sound("bd sd, hh*4")')
   const { connected, sendMessage, socket } = useWebSocket()
   const { isPlaying, error, toggle } = useStrudel()
 
