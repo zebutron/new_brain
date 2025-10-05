@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getAudioContext, initAudioOnFirstClick, webaudioRepl, registerSynthSounds } from '@strudel/webaudio'
+import { getAudioContext, initAudioOnFirstClick, webaudioRepl, registerSynthSounds, samples } from '@strudel/webaudio'
 import { transpiler } from '@strudel/transpiler'
 import * as strudel from '@strudel/core'
 import * as mini from '@strudel/mini'
@@ -30,6 +30,21 @@ export function useStrudelDirect() {
         // Register synth sounds
         registerSynthSounds()
         console.log('🎹 Synths registered')
+        
+        // Register our local samples
+        const sampleMap = {
+          bd: '/samples/bd',
+          sd: '/samples/sd',
+          hh: '/samples/hh',
+          cp: '/samples/cp',
+          oh: '/samples/oh',
+          lt: '/samples/lt',
+          mt: '/samples/mt',
+          ht: '/samples/ht',
+        }
+        
+        await samples(sampleMap)
+        console.log('🥁 Drums registered')
         
         // Use webaudioRepl - pre-configured with audio output
         replRef.current = webaudioRepl({
