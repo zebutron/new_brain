@@ -32,26 +32,31 @@ export function useStrudelDirect() {
         console.log('🎹 Synths registered')
         
         // Register drum samples manually
-        const drums = ['bd', 'sd', 'hh', 'cp', 'oh', 'lt', 'mt', 'ht']
+        const drums = ['bd', 'sd', 'hh', 'cp', 'oh']
         for (const drum of drums) {
-          registerSound(drum, (t, value, onended) => {
+          registerSound(drum, async (t, value, onended) => {
             const ctx = getAudioContext()
-            const sampleUrl = `/samples/${drum}/${value.n || 0}.wav`
+            const n = value.n || 0
+            const sampleUrl = `/samples/${drum}/BT0A0A7.wav`
             
-            fetch(sampleUrl)
-              .then(r => r.arrayBuffer())
-              .then(buf => ctx.decodeAudioData(buf))
-              .then(buffer => {
-                const source = ctx.createBufferSource()
-                source.buffer = buffer
-                const gain = ctx.createGain()
-                gain.gain.value = value.gain || 1
-                source.connect(gain)
-                source.start(t)
-                source.onended = onended
-                return { node: gain }
-              })
-              .catch(err => console.log(`Sample ${sampleUrl} not found, trying next`))
+            try {
+              const response = await fetch(sampleUrl)
+              const arrayBuffer = await response.arrayBuffer()
+              const buffer = await ctx.decodeAudioData(arrayBuffer)
+              
+              const source = ctx.createBufferSource()
+              source.buffer = buffer
+              const gain = ctx.createGain()
+              gain.gain.value = value.gain || 1
+              source.connect(gain)
+              source.start(t)
+              source.onended = onended
+              
+              return { node: gain, stop: () => source.stop() }
+            } catch (err) {
+              console.log(`Sample error:`, err.message)
+              return { node: ctx.createGain(), stop: () => {} }
+            }
           }, { type: 'sample' })
         }
         console.log('🥁 Drums registered')
