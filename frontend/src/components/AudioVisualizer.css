@@ -1,0 +1,28 @@
+.audio-visualizer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.visualizer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.visualizer-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ff00ff;
+}
+
+.visualizer-canvas {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+

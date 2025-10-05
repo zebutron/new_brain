@@ -1,0 +1,107 @@
+.control-panel {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.play-button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #00d4ff, #0099cc);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 212, 255, 0.4);
+}
+
+.play-button.playing {
+  background: linear-gradient(135deg, #ff00ff, #cc0099);
+  box-shadow: 0 4px 12px rgba(255, 0, 255, 0.3);
+}
+
+.control-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.control-slider {
+  width: 150px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.control-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #00d4ff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.5);
+}
+
+.control-input {
+  width: 100px;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.feedback-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.feedback-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.feedback-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.feedback-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+

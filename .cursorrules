@@ -1,0 +1,73 @@
+# Cursor Rules for New Brain Project
+
+## Project Context
+This is a real-time collaborative music creation system using Strudel. AI acts as composer/DJ, human provides musical feedback. Always reference AGENTS.md for full context.
+
+## Core Principles
+- **Real-time first**: Optimize for low latency and smooth audio performance
+- **Collaborative**: Code should support human-AI pair programming and live iteration
+- **Modular**: Easy to add samples, plugins, effects, and integrations
+- **Clear**: Readable code that supports creative flow
+
+## Code Standards
+
+### TypeScript/JavaScript
+- Use TypeScript for type safety where possible
+- Async/await for asynchronous operations
+- Functional components in React (hooks)
+- Clear variable naming (musicality over brevity)
+- Comment timing-critical audio code
+
+### Audio Code
+- Always handle Web Audio context lifecycle
+- Consider browser autoplay policies
+- Document buffer sizes and sample rates
+- Test across different audio devices
+- Handle audio cleanup properly (prevent memory leaks)
+
+### File Organization
+- Components: Small, single-purpose, composable
+- Utils: Pure functions, well-tested
+- Keep audio logic separate from UI logic
+- Co-locate related files (component + styles + tests)
+
+## Performance
+- Profile audio processing code
+- Minimize allocations in audio callback loops
+- Use Web Workers for heavy computation
+- Lazy load large sample libraries
+
+## Testing
+- Critical audio routing must be testable
+- Mock Web Audio API in tests when needed
+- Manual testing of latency and audio quality is essential
+
+## Documentation
+- Update AGENTS.md with significant architectural decisions
+- Document non-obvious audio/timing considerations
+- Keep README.md current with setup instructions
+
+## Environment
+- Never commit .env files (already gitignored)
+- Use environment variables for configuration
+- Separate dev/prod environments (.env.dev, .env.prod)
+
+## Git Workflow
+- Meaningful commit messages
+- Small, focused commits when possible
+- Branch for experimental features
+- Main branch should always be runnable
+
+## AI Behavior Patterns
+- Take creative initiative in music generation
+- Iterate based on human feedback
+- Explore variations proactively
+- Balance structure with experimentation
+- Communicate musical intent in comments
+
+## Strudel-Specific
+- Pattern-based notation is first-class
+- Live evaluation is core to experience
+- Integration should feel seamless
+- Preserve Strudel's expressive power
+
