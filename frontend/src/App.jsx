@@ -6,13 +6,19 @@ import './App.css'
 
 function App() {
   const [code, setCode] = useState(`stack(
-  note("g0 ~ g0 ~")
+  note("g1 ~ g1 ~")
     .s("sawtooth")
-    .lpf(200)
-    .distort(0.6)
+    .lpf(800)
+    .resonance(15)
+    .distort(0.8)
     .room(0.7)
     .decay(0.8)
-    .gain(1.1),
+    .gain(1.3),
+  note("g2 ~ ~ g2")
+    .s("square")
+    .lpf(400)
+    .distort(0.5)
+    .gain(0.9),
   s("bd ~ ~ bd, ~ ~ sd ~")
     .gain(1.4)
     .room(0.8),
