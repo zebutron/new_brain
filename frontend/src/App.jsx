@@ -5,7 +5,24 @@ import { useStrudelDirect } from './hooks/useStrudelDirect'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('stack(note("c1 e1 g1 c2 e1 g1 c2 e1").s("sawtooth").lpf(400).room(0.5).gain(0.7),s("bd*4, ~ sd ~ sd, hh*8").gain(1.2),note("<[c4 e4 g4] [~ ~ c5] ~!2>").s("square").lpf(4000).decay(0.06).gain(0.6).delay(0.5).delaytime(0.125).delayfeedback(0.4).sometimes(x=>x.add(note(rand.range(-12,12)))))')
+  const [code, setCode] = useState(`stack(
+  note("c1 e1 g1 c2 e1 g1 c2 e1")
+    .s("sawtooth")
+    .lpf(400)
+    .room(0.5)
+    .gain(0.7),
+  s("bd*4, ~ sd ~ sd, hh*8")
+    .gain(1.2),
+  note("<[c4 e4 g4] [~ ~ c5] ~!2>")
+    .s("square")
+    .lpf(4000)
+    .decay(0.06)
+    .gain(0.6)
+    .delay(0.5)
+    .delaytime(0.125)
+    .delayfeedback(0.4)
+    .sometimes(x => x.add(note(rand.range(-12, 12))))
+)`)
   const { isPlaying, error, toggle } = useStrudelDirect()
 
   const handleCodeChange = (newCode) => {
@@ -14,6 +31,13 @@ function App() {
 
   const handlePlayToggle = () => {
     toggle(code)
+  }
+
+  const handleEvaluate = (newCode) => {
+    if (isPlaying) {
+      toggle(code)
+      setTimeout(() => toggle(newCode), 100)
+    }
   }
 
   return (
@@ -35,6 +59,7 @@ function App() {
             onChange={handleCodeChange}
             isPlaying={isPlaying}
             error={error}
+            onEvaluate={handleEvaluate}
           />
         </div>
 
