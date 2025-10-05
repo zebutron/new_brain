@@ -1,5 +1,24 @@
 # Working Notes
 
+## Collaboration Workflow
+
+1. **Human** edits code in browser editor
+2. **Human** presses **Cmd+Enter** → code saves to `patterns/current.js` + timestamped version
+3. **AI** reads `patterns/current.js` when iterating
+4. **AI** updates code in `App.jsx` → pushes to git
+5. **Human** refreshes browser to get AI's changes
+6. **Repeat**
+
+### For AI: Always Read Current Pattern
+```bash
+cat patterns/current.js
+```
+
+### Version History
+- `patterns/current.js` - ALWAYS the latest
+- `patterns/session-*.js` - Last 5 timestamped versions
+- `patterns/arpeggio-foundation.js` - Saved good patterns
+
 ## What Actually Works
 
 ### Audio Engine
