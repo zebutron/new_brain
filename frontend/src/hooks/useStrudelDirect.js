@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getAudioContext, initAudioOnFirstClick, webaudioOutput } from '@strudel/webaudio'
-import { repl } from '@strudel/core'
+import { getAudioContext, initAudioOnFirstClick, webaudioRepl } from '@strudel/webaudio'
 import { transpiler } from '@strudel/transpiler'
 import * as strudel from '@strudel/core'
 import * as mini from '@strudel/mini'
@@ -28,15 +27,9 @@ export function useStrudelDirect() {
         Object.assign(window, strudel, mini, tonal)
         console.log('📚 Loaded functions:', Object.keys(strudel).length + Object.keys(mini).length + Object.keys(tonal).length)
         
-        // Set webaudio as default output BEFORE creating repl
-        if (strudel.getDefaultValue) {
-          strudel.setDefaultValue('onTrigger', webaudioOutput)
-        }
-        
-        // Create REPL
-        replRef.current = repl({
+        // Use webaudioRepl - pre-configured with audio output
+        replRef.current = webaudioRepl({
           transpiler,
-          getTime: () => ctx.currentTime,
         })
         
         console.log('✅ Ready')
