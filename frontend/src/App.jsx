@@ -6,7 +6,7 @@ import { useWebSocket } from './hooks/useWebSocket'
 import './App.css'
 
 function App() {
-  const [code, setCode] = useState('sound("bd sd, hh*4")')
+  const [code, setCode] = useState('note("c3 e3 g3 c4").s("sawtooth")')
   const [isPlaying, setIsPlaying] = useState(false)
   const { connected, sendMessage, socket } = useWebSocket()
 
