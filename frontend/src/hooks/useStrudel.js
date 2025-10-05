@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { repl } from '@strudel/core'
-import { getAudioContext, initAudioOnFirstClick } from '@strudel/webaudio'
+import { getAudioContext, initAudioOnFirstClick, webaudioOutput, initAudio } from '@strudel/webaudio'
 import { transpiler } from '@strudel/transpiler'
+import * as strudel from '@strudel/core'
+import * as mini from '@strudel/mini'
+import * as webaudio from '@strudel/webaudio'
 
 export function useStrudel() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -22,6 +25,10 @@ export function useStrudel() {
           await audioContext.resume()
           console.log('▶️ AudioContext resumed')
         }
+        
+        Object.assign(window, strudel, mini, webaudio)
+        
+        await initAudio()
         
         replInstanceRef.current = repl({
           transpiler,
