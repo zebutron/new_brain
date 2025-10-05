@@ -32,7 +32,7 @@ function App() {
       .gain(sine.range(0.6, 0.9).slow(2.5))
       .decay(0.6)
       .room(0.8)
-  ),
+  ).slow(4),
   stack(
     note("e1 f1 e1 eb1")
       .s("sawtooth")
@@ -63,7 +63,7 @@ function App() {
       .gain(sine.range(0.7, 1.0).slow(2))
       .decay(0.4)
       .room(0.9)
-  )
+  ).slow(4)
 )`)
   const { isPlaying, error, toggle } = useStrudelDirect()
 
