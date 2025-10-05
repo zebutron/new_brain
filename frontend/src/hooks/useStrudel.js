@@ -1,99 +1,96 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { evaluate, controls } from '@strudel/core'
-import { getAudioContext, initAudioOnFirstClick, webaudioOutput } from '@strudel/webaudio'
+import { transpiler } from '@strudel/transpiler'
+import { repl } from '@strudel/core'
+import { getAudioContext, initAudioOnFirstClick } from '@strudel/webaudio'
 
 export function useStrudel() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
   const [error, setError] = useState(null)
-  const stopRef = useRef(null)
+  const replInstanceRef = useRef(null)
 
-  // Initialize audio context on first user interaction
   useEffect(() => {
-    const init = async () => {
+    const initStrudel = async () => {
       try {
+        console.log('🎵 Initializing Strudel...')
         await initAudioOnFirstClick()
+        
+        const audioContext = getAudioContext()
+        console.log('🔊 AudioContext state:', audioContext.state)
+        
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume()
+          console.log('▶️ AudioContext resumed')
+        }
+        
+        replInstanceRef.current = repl({
+          autodraw: false,
+          getTime: () => getAudioContext().currentTime,
+        })
+        
         setIsInitialized(true)
-        console.log('✅ Strudel audio initialized')
+        console.log('✅ Strudel ready')
       } catch (err) {
-        console.error('Failed to initialize audio:', err)
+        console.error('❌ Init failed:', err)
         setError(err.message)
       }
     }
-    
-    // Set up click handler for audio context initialization
+
     const handleClick = () => {
-      if (!isInitialized) {
-        init()
+      if (!isInitialized && !replInstanceRef.current) {
+        initStrudel()
       }
     }
-    
+
     document.addEventListener('click', handleClick, { once: true })
     
     return () => {
       document.removeEventListener('click', handleClick)
+      if (replInstanceRef.current?.stop) {
+        replInstanceRef.current.stop()
+      }
     }
   }, [isInitialized])
 
   const play = useCallback(async (code) => {
-    if (!isInitialized) {
-      setError('Audio not initialized. Click anywhere to start.')
+    if (!replInstanceRef.current) {
+      setError('Not initialized')
       return
     }
 
     try {
-      // Stop current pattern if playing
-      if (stopRef.current) {
-        stopRef.current()
-        stopRef.current = null
-      }
-
-      if (!code || code.trim() === '' || code.trim().startsWith('//')) {
-        setError('No executable code to play')
+      if (!code || code.trim() === '') {
+        setError('No code')
         return
       }
 
-      console.log('🎵 Evaluating code:', code)
-
-      // Evaluate the code using Strudel's evaluate function
-      const { pattern, stop } = await evaluate(code, {
-        getTime: () => getAudioContext().currentTime,
-        onToggle: (playing) => {
-          setIsPlaying(playing)
-        }
-      })
-
-      if (!pattern) {
-        setError('No pattern returned from evaluation')
-        return
+      const audioContext = getAudioContext()
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume()
       }
 
-      console.log('✅ Pattern evaluated, starting playback...')
+      console.log('🎵 Code:', code)
 
-      // Store stop function
-      stopRef.current = stop
+      const transpiledCode = transpiler(code)
+      console.log('📝 Transpiled:', transpiledCode)
 
-      // Start playing with webaudio output
-      pattern.onTrigger(webaudioOutput, {
-        nudge: 0,
-        duration: 1,
-      })
-
+      await replInstanceRef.current.evaluate(transpiledCode)
+      
       setIsPlaying(true)
       setError(null)
+      console.log('✅ Playing')
     } catch (err) {
-      console.error('❌ Play error:', err)
-      setError(err.message || 'Failed to play pattern')
+      console.error('❌ Error:', err)
+      setError(err.message || 'Failed')
+      setIsPlaying(false)
     }
-  }, [isInitialized])
+  }, [])
 
   const stop = useCallback(() => {
-    if (stopRef.current) {
-      stopRef.current()
-      stopRef.current = null
+    if (replInstanceRef.current?.stop) {
+      replInstanceRef.current.stop()
     }
     setIsPlaying(false)
-    console.log('⏸ Stopped playback')
   }, [])
 
   const toggle = useCallback(async (code) => {
@@ -104,15 +101,6 @@ export function useStrudel() {
     }
   }, [isPlaying, play, stop])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (stopRef.current) {
-        stopRef.current()
-      }
-    }
-  }, [])
-
   return {
     isPlaying,
     isInitialized,
@@ -122,4 +110,3 @@ export function useStrudel() {
     toggle,
   }
 }
-
