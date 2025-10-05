@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getAudioContext, initAudioOnFirstClick, webaudioRepl, registerSynthSounds, samples } from '@strudel/webaudio'
+import { getAudioContext, initAudioOnFirstClick, webaudioRepl, registerSynthSounds, registerSound } from '@strudel/webaudio'
 import { transpiler } from '@strudel/transpiler'
 import * as strudel from '@strudel/core'
 import * as mini from '@strudel/mini'
@@ -30,6 +30,31 @@ export function useStrudelDirect() {
         // Register synth sounds
         registerSynthSounds()
         console.log('🎹 Synths registered')
+        
+        // Register drum samples manually
+        const drums = ['bd', 'sd', 'hh', 'cp', 'oh', 'lt', 'mt', 'ht']
+        for (const drum of drums) {
+          registerSound(drum, (t, value, onended) => {
+            const ctx = getAudioContext()
+            const sampleUrl = `/samples/${drum}/${value.n || 0}.wav`
+            
+            fetch(sampleUrl)
+              .then(r => r.arrayBuffer())
+              .then(buf => ctx.decodeAudioData(buf))
+              .then(buffer => {
+                const source = ctx.createBufferSource()
+                source.buffer = buffer
+                const gain = ctx.createGain()
+                gain.gain.value = value.gain || 1
+                source.connect(gain)
+                source.start(t)
+                source.onended = onended
+                return { node: gain }
+              })
+              .catch(err => console.log(`Sample ${sampleUrl} not found, trying next`))
+          }, { type: 'sample' })
+        }
+        console.log('🥁 Drums registered')
         
         // Use webaudioRepl - pre-configured with audio output
         replRef.current = webaudioRepl({
