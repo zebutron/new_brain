@@ -33,7 +33,20 @@ function App() {
     toggle(code)
   }
 
-  const handleEvaluate = (newCode) => {
+  const handleEvaluate = async (newCode) => {
+    // Save code to backend
+    try {
+      await fetch('http://localhost:3001/api/code/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: newCode })
+      })
+      console.log('💾 Code saved')
+    } catch (err) {
+      console.error('Save failed:', err)
+    }
+    
+    // Re-evaluate if playing
     if (isPlaying) {
       toggle(code)
       setTimeout(() => toggle(newCode), 100)
