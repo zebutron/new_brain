@@ -8,9 +8,26 @@ function StrudelREPL({ code, onChange, isPlaying }) {
     const repl = replRef.current
     if (!repl) return
 
-    // Set code on the component
-    if (code && repl.code !== code) {
-      repl.code = code
+    // Wait for component to be ready
+    const initEditor = () => {
+      if (code && repl.code !== code) {
+        repl.code = code
+      }
+      
+      // Force evaluation on mount
+      setTimeout(() => {
+        if (repl.editor?.repl?.evaluate) {
+          repl.editor.repl.evaluate(code).catch(err => {
+            console.log('Initial eval error (ok if samples loading):', err.message)
+          })
+        }
+      }, 1000)
+    }
+
+    if (repl.editor) {
+      initEditor()
+    } else {
+      setTimeout(initEditor, 500)
     }
 
     // Listen for code changes from the editor
