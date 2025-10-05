@@ -28,10 +28,14 @@ export function useStrudelDirect() {
         Object.assign(window, strudel, mini, tonal)
         console.log('📚 Loaded functions:', Object.keys(strudel).length + Object.keys(mini).length + Object.keys(tonal).length)
         
-        // Create REPL with webaudioOutput
+        // Create REPL with proper configuration
         replRef.current = repl({
           transpiler,
-          onTrigger: webaudioOutput,
+          getTime: () => ctx.currentTime,
+          onTrigger: (time, hap, currentTime, cps) => {
+            console.log('🔊 Trigger!', time, hap.value)
+            webaudioOutput(time, hap, currentTime, cps)
+          },
         })
         
         console.log('✅ Ready')
