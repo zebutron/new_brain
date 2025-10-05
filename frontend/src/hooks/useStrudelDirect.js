@@ -89,9 +89,21 @@ export function useStrudelDirect() {
   }, [])
 
   const play = useCallback(async (code) => {
+    // Initialize audio if not ready
     if (!replRef.current) {
-      setError('Not ready')
-      return
+      console.log('🎵 Initializing audio...')
+      await initAudioOnFirstClick()
+      
+      const ctx = getAudioContext()
+      if (ctx.state === 'suspended') {
+        await ctx.resume()
+      }
+      
+      Object.assign(window, strudel, mini, tonal)
+      registerSynthSounds()
+      
+      replRef.current = webaudioRepl({ transpiler })
+      console.log('✅ Audio ready')
     }
 
     try {
