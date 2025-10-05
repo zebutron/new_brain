@@ -27,6 +27,10 @@ export function useStrudelDirect() {
         Object.assign(window, strudel, mini, tonal)
         console.log('📚 Loaded functions:', Object.keys(strudel).length + Object.keys(mini).length + Object.keys(tonal).length)
         
+        // Register synth sounds
+        registerSynthSounds()
+        console.log('🎹 Synths registered')
+        
         // Use webaudioRepl - pre-configured with audio output
         replRef.current = webaudioRepl({
           transpiler,
