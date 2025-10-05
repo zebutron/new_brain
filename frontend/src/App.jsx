@@ -6,7 +6,7 @@ import './App.css'
 
 function App() {
   const [code, setCode] = useState(`stack(
-  note("<a1 bb1 a1 ab1>")
+  note("<<a1 bb1 a1 ab1> <e1 f1 e1 eb1>>")
     .s("sawtooth")
     .lpf(800)
     .resonance(15)
@@ -14,34 +14,23 @@ function App() {
     .room(0.7)
     .decay(0.8)
     .gain(1.3),
-  note("<a0 bb0 a0 ab0>")
+  note("<<a0 bb0 a0 ab0> <e0 f0 e0 eb0>>")
     .s("sine")
     .lpf(200)
     .distort(0.3)
     .gain(1.0),
-  note("<a-1 bb-1 a-1 ab-1>")
-    .s("sine")
-    .lpf(100)
-    .gain(0.7),
   s("bd ~ ~ bd, ~ ~ sd ~")
     .gain(1.4)
     .room(0.8),
   s("~ ~ ~ ~, [~ ~ hh ~]*2")
     .gain(0.6),
-  note("<<[~ ~ a4 ~] [~ c5 ~ ~] [~ ~ eb5 ~] [d5 ~ ~ ~]> <[~ f4 ~ ~] [~ ~ ab4 ~] [c5 ~ ~ bb4] [~ ab4 ~ f4]>>")
+  note("<<[~ ~ a4 ~] [~ c5 ~ ~] [~ ~ eb5 ~] [d5 ~ ~ ~]> <[e4 ~ f4 gb4] [~ ab4 ~ f4] [e4 eb4 ~ db4] [~ c4 db4 ~]>>")
     .s("sawtooth")
     .lpf(sine.range(800, 2000).slow(4))
     .distort(sine.range(0.3, 0.7).slow(3))
     .gain(sine.range(0.6, 0.9).slow(2.5))
     .decay(0.6)
-    .room(0.8),
-  note("<<~ ~ ~ ~> <[~ ~ db5 ~] [~ eb5 ~ ~] [~ ~ gb5 ~] [f5 ~ eb5 ~]>>")
-    .s("square")
-    .lpf(sine.range(600, 1500).slow(5))
-    .distort(sine.range(0.4, 0.8).slow(4.5))
-    .gain(sine.range(0.4, 0.7).slow(3))
-    .decay(0.8)
-    .room(0.9)
+    .room(0.8)
 )`)
   const { isPlaying, error, toggle } = useStrudelDirect()
 
